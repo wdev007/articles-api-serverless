@@ -1,0 +1,42 @@
+service: articles
+frameworkVersion: '2'
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-dynamodb-local
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: us-east-1
+  # environment:
+  #   TABLE_ARTICLES: articles-${opt:stage, self:provider.stage}
+
+functions:
+  articlesCreate:
+    handler: handler.hello
+
+resources:
+  Resources:
+    articlesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: articlesTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: title
+            AttributeType: S
+          - AttributeName: create_at
+            AttributeType: S
+          - AttributeName: updated_at
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
