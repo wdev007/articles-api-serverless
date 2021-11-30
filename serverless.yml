@@ -25,7 +25,7 @@ provider:
 
 functions:
   articlesCreate:
-    handler: handler.create
+    handler: src/index.create
     memorySize: 128
     events:
     - http: 

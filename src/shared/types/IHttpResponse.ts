@@ -3,6 +3,11 @@ interface IResponse {
   body: string;
 }
 
+interface IParams {
+  status: number;
+  body: any;
+}
+
 export interface IHttpResponse {
-  send(): Promise<IResponse>
+  send(params: IParams): Promise<IResponse>
 }

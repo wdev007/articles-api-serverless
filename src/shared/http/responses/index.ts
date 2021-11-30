@@ -1,13 +1,11 @@
 import { IHttpResponse } from "../../types/IHttpResponse";
 
 class HttpResponse implements IHttpResponse {
-  async send() {
+  async send({ status, body }) {
+    console.log('body: ', body);
     return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Go Serverless Webpack (Typescript) v1.0! Your function executed successfully!',
-        // input: event,
-      }, null, 2)
+      statusCode: status,
+      body: JSON.stringify(body)
     }
   }
 }

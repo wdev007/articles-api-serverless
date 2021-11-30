@@ -1,3 +1,4 @@
+import { StatusCode } from "../shared/http/enums/statusCode";
 import { IHttpResponse } from "../shared/types/IHttpResponse";
 import { IRepository } from "../shared/types/IRepository";
 
@@ -8,7 +9,11 @@ class DeleteService {
   ) {}
 
   run = async () => {
-    return this.http.send();
+
+    return this.http.send({
+      status: StatusCode.NO_CONTEN,
+      body: ""
+    });
   }
 }
 
