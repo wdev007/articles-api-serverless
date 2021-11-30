@@ -9,10 +9,6 @@ import UpdateService from "./services/update";
 
 const httpResponse = new HttpResponse();
 
-// const repository = new LocalRepository();
-repository.findAll().then(res => {
-  console.log('findAll: ', res);
-})
 const createService = new CreateService(httpResponse, repository);
 const getService = new GetService(httpResponse, repository);
 const getAllService = new GetAllService(httpResponse, repository);
