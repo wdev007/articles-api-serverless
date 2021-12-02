@@ -4,17 +4,16 @@ import { IHttpResponse } from "../../../shared/types/IHttpResponse";
 
 class DeleteService {
   constructor(
-    private readonly http: IHttpResponse,
-    // private readonly repository: IRepository
-  ) {}
+    private readonly http: IHttpResponse
+  ) // private readonly repository: IRepository
+  {}
 
-  run = async () => {
-
+  handler = async () => {
     return this.http.send({
       status: StatusCode.NO_CONTEN,
-      body: ""
+      body: "",
     });
-  }
+  };
 }
 
 export default DeleteService;

@@ -6,12 +6,12 @@ import { IRepository } from "../../../shared/types/IRepository";
 class GetAllService {
   constructor(public http: IHttpResponse, private repository: IRepository) {}
 
-  run: APIGatewayProxyHandler = async () => {
-    const articles = await this.repository.findAll();
+  handler: APIGatewayProxyHandler = async () => {
+    const articles = await this.repository.findAll({});
 
     return this.http.send({
       status: StatusCode.OK,
-      body: articles
+      body: articles,
     });
   };
 }

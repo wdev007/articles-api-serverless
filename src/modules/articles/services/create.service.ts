@@ -9,7 +9,7 @@ class CreateService {
     private readonly repository: IRepository
   ) {}
 
-  run: APIGatewayProxyHandler = async (event) => {
+  handler: APIGatewayProxyHandler = async (event) => {
     const  body =  typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
     const { title } = body;
     

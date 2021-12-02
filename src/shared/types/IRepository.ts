@@ -1,9 +1,9 @@
 import { IArticle } from "./IArticle";
 
 export interface IRepository {
-  create(title: any): Promise<IArticle>;
-  findAll(): Promise<IArticle[]>;
-  find(id: string): Promise<IArticle | undefined>;
-  update(id: string, payload: any): Promise<IArticle | undefined>;
-  delete(id: string): Promise<IArticle | undefined>;
+  create(params: any): Promise<IArticle>;
+  findAll(params: any): Promise<IArticle[]>;
+  find(params: any): Promise<IArticle | undefined>;
+  update(params: any, payload: any): Promise<void>;
+  delete(params: any): Promise<void>;
 }

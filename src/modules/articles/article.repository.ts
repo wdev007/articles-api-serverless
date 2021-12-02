@@ -31,13 +31,13 @@ class ArticleRepository implements IRepository {
     return this.articles;
   }
 
-  async update(id: string, payload: any) {
-    console.log(payload);
-    return this.articles.find(article => article.id === id)
+  async update(params: any, payload: any) {
+    console.log(params, payload);
+    
   }
 
-  async delete(id: string) {
-    return this.articles.find(article => article.id === id)
+  async delete(params: any) {
+    console.log(params);
   }
 }
 

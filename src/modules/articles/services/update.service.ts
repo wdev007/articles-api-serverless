@@ -4,16 +4,16 @@ import { IHttpResponse } from "../../../shared/types/IHttpResponse";
 
 class UpdateService {
   constructor(
-    private readonly http: IHttpResponse,
-    // private readonly repository: IRepository
-  ) {}
+    private readonly http: IHttpResponse
+  ) // private readonly repository: IRepository
+  {}
 
-  run = async () => {
+  handler = async () => {
     return this.http.send({
       status: StatusCode.NO_CONTEN,
-      body: ""
+      body: "",
     });
-  }
+  };
 }
 
 export default UpdateService;

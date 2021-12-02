@@ -9,16 +9,16 @@ class GetService {
     private readonly repository: IRepository
   ) {}
 
-  run: APIGatewayProxyHandler = async (event) => {
+  handler: APIGatewayProxyHandler = async (event) => {
     const { id } = event.pathParameters as any;
 
     const article = await this.repository.find(id);
 
     return this.http.send({
       status: StatusCode.OK,
-      body: article
+      body: article,
     });
-  }
+  };
 }
 
 export default GetService;
