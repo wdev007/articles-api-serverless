@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler } from 'aws-lambda'
-import { StatusCode } from '../shared/http/enums/statusCode';
-import { IHttpResponse } from "../shared/types/IHttpResponse";
-import { IRepository } from "../shared/types/IRepository";
+import { StatusCode } from '../../../shared/http/enums/statusCode';
+import { IHttpResponse } from "../../../shared/types/IHttpResponse";
+import { IRepository } from "../../../shared/types/IRepository";
 
 class CreateService {
   constructor(
