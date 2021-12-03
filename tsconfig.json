@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "lib": ["es2017"],
+    "lib": ["ES5"],
     "removeComments": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": true,
-    "target": "es2017",
+    "target": "ES5",
+    "module": "CommonJS",
     "outDir": "./dist",
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "types" : [ "node", "mocha"]
+    "types" : [ "node"]
   },
   "include": ["src"],
   "exclude": [
@@ -23,7 +24,6 @@
     ".vscode/**/*",
     ".idea/**/*",
     "dist/**/*",
-    "tests/**/*",
     "**/**/*.test.ts"
   ]
 }

@@ -1,8 +1,8 @@
 import * as AWS from "aws-sdk";
-import HttpResponse from "src/shared/http/responses";
-import { IArticle } from "src/shared/types/IArticle";
-import { IConfigAws } from "src/shared/types/IConfigAws";
-import { IRepository } from "src/shared/types/IRepository";
+import HttpResponse from "../../http/responses";
+import { IArticle } from "../../types/IArticle";
+import { IConfigAws } from "../../types/IConfigAws";
+import { IRepository } from "../../types/IRepository";
 
 type PutItem = AWS.DynamoDB.DocumentClient.PutItemInput;
 type QueryItem = AWS.DynamoDB.DocumentClient.QueryInput;
