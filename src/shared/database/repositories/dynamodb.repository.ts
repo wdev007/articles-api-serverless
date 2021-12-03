@@ -1,5 +1,7 @@
 import * as AWS from "aws-sdk";
+import { GetItemInput } from "aws-sdk/clients/dynamodb";
 import { v4 } from 'uuid';
+
 import HttpResponse from "../../http/responses";
 import { IArticle } from "../../types/IArticle";
 import { IConfigAws } from "../../types/IConfigAws";
@@ -10,30 +12,11 @@ type QueryItem = AWS.DynamoDB.DocumentClient.QueryInput;
 type UpdateItem = AWS.DynamoDB.DocumentClient.UpdateItemInput;
 type DeleteItem = AWS.DynamoDB.DocumentClient.DeleteItemInput;
 
-type Item = {[index: string]: string};
-
-// const {
-//     STAGE,
-//     DYNAMODB_LOCAL_STAGE,
-//     DYNAMODB_LOCAL_ACCESS_KEY_ID,
-//     DYNAMODB_LOCAL_SECRET_ACCESS_KEY,
-//     DYNAMODB_LOCAL_ENDPOINT
-// } = process.env;
-
 const config: IConfigAws = { region: "us-east-1" };
-
-// if (STAGE === DYNAMODB_LOCAL_STAGE) {
-//     config.accessKeyId = DYNAMODB_LOCAL_ACCESS_KEY_ID || ''; // local dynamodb accessKeyId
-//     config.secretAccessKey = DYNAMODB_LOCAL_SECRET_ACCESS_KEY || ''; // local dynamodb secretAccessKey
-//     config.endpoint = DYNAMODB_LOCAL_ENDPOINT || 'http://localhost:8000'; // local dynamodb endpoint
-// }
 
 AWS.config.update(config);
 
-const documentClient = new AWS.DynamoDB.DocumentClient({
-  // endpoint: 'http://localhost:8000',
-  // region: 'localhost'
-});
+const documentClient = new AWS.DynamoDB.DocumentClient();
 
 class DynamoDBRepository implements IRepository {
   private client: AWS.DynamoDB.DocumentClient;
@@ -43,20 +26,18 @@ class DynamoDBRepository implements IRepository {
   }
 
   create = async (title: string): Promise<IArticle> => {
-    console.log('title: ', title);
-    const params: PutItem = {
-      TableName: 'articles-table',
-      Item: {
-        id: v4(),
-        title
-      }
-    }
     try {
+      const params: PutItem = {
+        TableName: process.env.TABLE_NAME,
+        Item: {
+          id: v4(),
+          title,
+        }
+      }
+
       await this.client.put(params).promise();
 
-      return {
-        title
-      }
+      return params.Item as IArticle;
     } catch (error) {
       console.log('error: ', error);
       
@@ -67,15 +48,32 @@ class DynamoDBRepository implements IRepository {
     }
   };
 
-  find = async (params: QueryItem): Promise<IArticle> => {
-    console.log('params: ', params);
-    return {
-      title: "",
-    };
+  find = async (id: string): Promise<IArticle> => {
+    try {
+      const params: GetItemInput = {
+        TableName: process.env.TABLE_NAME,
+        Key: {
+          id: {
+            S: id
+          }
+        }
+      }
+
+      const data = await this.client.get(params).promise();
+
+      return data.Item as IArticle;
+
+    } catch (error) {
+      console.log('error: ', error);
+      
+      throw new HttpResponse().send({
+        status: 500,
+        body: error
+      });
+    }
   };
 
-  findAll = async (para: QueryItem): Promise<IArticle[]> => {
-    // console.log('params: ', params);
+  findAll = async (): Promise<IArticle[]> => {
     try {
       const params: QueryItem = {
         TableName: 'articles-table'
@@ -99,6 +97,29 @@ class DynamoDBRepository implements IRepository {
   update = async (params: UpdateItem) => {
     console.log('params: ', params);
   };
+
+  private async saveInHistory(item: any): Promise<void> {
+    try {
+      const params: PutItem = {
+        TableName: process.env.HISTORY_TABLE_NAME,
+        Item: {
+          ...item,
+          article_id: item.id,
+          id: v4(),
+        }
+      }
+
+      await this.client.put(params).promise();
+
+    } catch (error) {
+      console.log('error: ', error);
+      
+      throw new HttpResponse().send({
+        status: 500,
+        body: error
+      });
+    }
+  }
 }
 
 export default new DynamoDBRepository;
