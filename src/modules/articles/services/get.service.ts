@@ -1,7 +1,9 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
+
 import { StatusCode } from "../../../shared/http/enums/statusCode";
-import { IHttpResponse } from "../../../shared/types/IHttpResponse";
-import { IRepository } from "../../../shared/types/IRepository";
+import { IHttpResponse, IRepository } from "../../../shared/types";
+
+import AppError from "../../../shared/errors/app-error";
 
 class GetService {
   constructor(
@@ -10,14 +12,30 @@ class GetService {
   ) {}
 
   handler: APIGatewayProxyHandler = async (event) => {
-    const { id } = event.pathParameters as any;
+    try {
+      const { id } = event.pathParameters as any;
 
-    const article = await this.repository.find(id);
+      const article = await this.repository.find(id);
 
-    return this.http.send({
-      status: StatusCode.OK,
-      body: article,
-    });
+      return this.http.send({
+        status: StatusCode.OK,
+        body: article,
+      });
+    } catch (error) {
+      console.error("ERRO IN GET: ", error);
+
+      if (error instanceof AppError) {
+        return this.http.send({
+          status: error.getStatus(),
+          body: error.message,
+        });
+      }
+
+      return this.http.send({
+        status: StatusCode.ERROR,
+        body: "Ocorreu um erro inesperado!",
+      });
+    }
   };
 }
 

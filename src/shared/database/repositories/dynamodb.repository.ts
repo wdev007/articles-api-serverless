@@ -1,11 +1,9 @@
 import * as AWS from "aws-sdk";
-import { GetItemInput } from "aws-sdk/clients/dynamodb";
 import { v4 } from 'uuid';
 
-import HttpResponse from "../../http/responses";
-import { IArticle } from "../../types/IArticle";
-import { IConfigAws } from "../../types/IConfigAws";
-import { IRepository } from "../../types/IRepository";
+import { historyTableName, tableName } from "../../constants/dynamodb";
+
+import { IArticle, IConfigAws, IRepository } from "../../types";
 
 type PutItem = AWS.DynamoDB.DocumentClient.PutItemInput;
 type QueryItem = AWS.DynamoDB.DocumentClient.QueryInput;
@@ -26,68 +24,48 @@ class DynamoDBRepository implements IRepository {
   }
 
   create = async (title: string): Promise<IArticle> => {
-    try {
-      const params: PutItem = {
-        TableName: process.env.TABLE_NAME,
-        Item: {
-          id: v4(),
-          title,
-        }
+    const params: PutItem = {
+      TableName: tableName,
+      Item: {
+        id: v4(),
+        title,
       }
-
-      await this.client.put(params).promise();
-
-      return params.Item as IArticle;
-    } catch (error) {
-      console.log('error: ', error);
-      
-      throw new HttpResponse().send({
-        status: 500,
-        body: error
-      });
     }
+
+    await this.client.put(params).promise();
+
+    return params.Item as IArticle;
   };
 
   find = async (id: string): Promise<IArticle> => {
-    try {
-      const params: GetItemInput = {
-        TableName: process.env.TABLE_NAME,
-        Key: {
-          id: {
-            S: id
-          }
-        }
+    const params = {
+      TableName: tableName,
+      Key: {
+        id
       }
-
-      const data = await this.client.get(params).promise();
-
-      return data.Item as IArticle;
-
-    } catch (error) {
-      console.log('error: ', error);
-      
-      throw new HttpResponse().send({
-        status: 500,
-        body: error
-      });
     }
+
+    const data = await this.client.get(params).promise();
+
+    return data.Item as IArticle;
   };
 
   findAll = async (): Promise<IArticle[]> => {
-    try {
-      const params: QueryItem = {
-        TableName: 'articles-table'
-      }
-      const data = await this.client.scan(params).promise();
-      
-      return data.Items as IArticle[];
-    } catch (error) {
-      console.log('error: ', error);
-      throw new HttpResponse().send({
-        status: 500,
-        body: error
-      });
+    const params: QueryItem = {
+      TableName: tableName
     }
+    const data = await this.client.scan(params).promise();
+    
+    return data.Items as IArticle[];
+  };
+
+  findAllHisotry = async (): Promise<IArticle[]> => {
+    const params: QueryItem = {
+      TableName: historyTableName
+    }
+    const data = await this.client.scan(params).promise();
+    
+    return data.Items as IArticle[];
   };
 
   delete = async (params: DeleteItem) => {
@@ -98,27 +76,34 @@ class DynamoDBRepository implements IRepository {
     console.log('params: ', params);
   };
 
-  private async saveInHistory(item: any): Promise<void> {
-    try {
-      const params: PutItem = {
-        TableName: process.env.HISTORY_TABLE_NAME,
-        Item: {
-          ...item,
-          article_id: item.id,
-          id: v4(),
-        }
+  findByTitle = async (title: string) => {
+    const params = {
+      TableName: tableName,
+      FilterExpression: "#key = :value",
+      ExpressionAttributeNames:{
+        "#key": "title"
+      },
+      ExpressionAttributeValues: {
+        ":value": title
       }
-
-      await this.client.put(params).promise();
-
-    } catch (error) {
-      console.log('error: ', error);
-      
-      throw new HttpResponse().send({
-        status: 500,
-        body: error
-      });
     }
+
+    const data = await this.client.scan(params).promise();
+
+    return data.Items[0] as IArticle;
+  }
+
+  saveInHistory = async (item: any): Promise<void> => {
+    const params: PutItem = {
+      TableName: historyTableName,
+      Item: {
+        ...item,
+        article_id: item.id,
+        id: v4(),
+      }
+    }
+
+    await this.client.put(params).promise();
   }
 }
 

@@ -73,7 +73,20 @@ resources:
     articlesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: articles-table
+        TableName: articles
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    articlesTableHistory:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: articles-history
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S

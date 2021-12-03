@@ -5,19 +5,19 @@ import AppError from "../../../shared/errors/app-error";
 
 import { IHttpResponse, IRepository } from "../../../shared/types";
 
-class GetAllService {
+class GetAllHistoryService {
   constructor(public http: IHttpResponse, private repository: IRepository) {}
 
   handler: APIGatewayProxyHandler = async () => {
     try {
-      const articles = await this.repository.findAll();
+      const articles = await this.repository.findAllHisotry();
 
       return this.http.send({
         status: StatusCode.OK,
         body: articles,
       });
     } catch (error) {
-      console.error("ERRO IN GETALL: ", error);
+      console.error("ERRO IN GETALLHISTORY: ", error);
 
       if (error instanceof AppError) {
         return this.http.send({
@@ -34,4 +34,4 @@ class GetAllService {
   };
 }
 
-export default GetAllService;
+export default GetAllHistoryService;
