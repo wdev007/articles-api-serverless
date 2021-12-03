@@ -1,7 +1,10 @@
+org: wdev007
+app: articles
 service: articles
 frameworkVersion: '2'
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-plugin-typescript
   - serverless-dynamodb-local
   - serverless-offline
@@ -65,39 +68,31 @@ functions:
         method: delete
         cors: true
 
-# resources:
-#   Resources:
-#     articlesTable:
-#       Type: AWS::DynamoDB::Table
-#       Properties:
-#         TableName: articlesTable
-#         AttributeDefinitions:
-#           - AttributeName: id
-#             AttributeType: S
-#           - AttributeName: title
-#             AttributeType: S
-#           - AttributeName: create_at
-#             AttributeType: S
-#           - AttributeName: updated_at
-#             AttributeType: S
-#         KeySchema:
-#           - AttributeName: id
-#             KeyType: HASH
-#         ProvisionedThroughput:
-#           ReadCapacityUnits: 1
-#           WriteCapacityUnits: 1
+resources:
+  Resources:
+    articlesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: articles-table
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
  
-
-
-# custom:
-#   dynamodb:
-#     stages:
-#       - dev
-#     start:
-#       port: 8000
-#       inMemory: true
-#       heapInitial: 200m
-#       heapMax: 1g
-#       migrate: true
-#       seed: true
-#       convertEmptyValues: true
+custom:
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true

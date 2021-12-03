@@ -1,5 +1,5 @@
 import HttpResponse from "../../shared/http/responses";
-import repository from "./article.repository";
+import repository from "../../shared/database/repositories/dynamodb.repository";
 
 import CreateService from "./services/create.service";
 import DeleteService from "./services/delete.service";
