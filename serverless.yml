@@ -27,16 +27,29 @@ provider:
   #   TABLE_ARTICLES: articles-${opt:stage, self:provider.stage}
 
 functions:
+  jwtAuth:
+    handler: handler.jwtAuth
+  basicAuth:
+    handler: handler.basicAuth
+  signIn:
+    handler: handler.signIn
+    events:
+      - http:
+          path: auth/login
+          method: post
+          cors: true
   articlesCreate:
-    handler: src/index.create
+    handler: handler.create
     memorySize: 128
     events:
     - http: 
         path: articles
         method: post
         cors: true
+        # authorizer:
+        #   name: jwtAuth
   articlesGetAll:
-    handler: src/index.getAll
+    handler: handler.getAll
     memorySize: 128
     events:
     - http: 
@@ -44,7 +57,7 @@ functions:
         method: get
         cors: true
   articlesGet:
-    handler: src/index.get
+    handler: handler.get
     memorySize: 128
     events:
     - http: 
@@ -52,7 +65,7 @@ functions:
         method: get
         cors: true  
   articlesUpdate:
-    handler: src/index.update
+    handler: handler.update
     memorySize: 128
     events:
     - http: 
@@ -60,12 +73,20 @@ functions:
         method: patch
         cors: true
   articlesDelete:
-    handler: src/index.exclude
+    handler: handler.exclude
     memorySize: 128
     events:
     - http: 
         path: articles/{id}
         method: delete
+        cors: true
+  articlesGetAllHistory:
+    handler: handler.getAllHistory
+    memorySize: 128
+    events:
+    - http: 
+        path: articles/history/{id}
+        method: get
         cors: true
 
 resources:

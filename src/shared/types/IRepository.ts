@@ -1,12 +1,12 @@
 import { IArticle } from "./IArticle";
 
 export interface IRepository {
-  create(params: any): Promise<IArticle>;
+  create(params: IArticle): Promise<IArticle>;
   findAll(): Promise<IArticle[]>;
-  findAllHisotry(): Promise<IArticle[]>;
-  find(params: any): Promise<IArticle | undefined>;
-  update(params: any, payload: any): Promise<void>;
-  delete(params: any): Promise<void>;
+  findAllHisotry(id: string): Promise<IArticle[]>;
+  find(id: string): Promise<IArticle | undefined>;
+  update(id: string, payload: IArticle): Promise<void>;
+  delete(id: string): Promise<void>;
   findByTitle(title: string): Promise<IArticle | undefined>;
-  saveInHistory(item: any): Promise<void>;
+  saveInHistory(item: IArticle): Promise<void>;
 }

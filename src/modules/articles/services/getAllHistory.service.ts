@@ -8,9 +8,11 @@ import { IHttpResponse, IRepository } from "../../../shared/types";
 class GetAllHistoryService {
   constructor(public http: IHttpResponse, private repository: IRepository) {}
 
-  handler: APIGatewayProxyHandler = async () => {
+  handler: APIGatewayProxyHandler = async (event) => {
     try {
-      const articles = await this.repository.findAllHisotry();
+      const { id } = event.pathParameters;
+
+      const articles = await this.repository.findAllHisotry(id);
 
       return this.http.send({
         status: StatusCode.OK,

@@ -3,10 +3,12 @@ export {
   exclude,
   get,
   getAll,
-  update
+  update,
+  getAllHistory,
 } from './modules/articles';
+
 export {
-AuthService,
-AwsPolicyGeneratorService,
-BasicAuthService
+  basicAuth,
+  jwtAuth,
+  signIn,
 } from './modules/auth';

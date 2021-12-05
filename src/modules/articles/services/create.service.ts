@@ -17,13 +17,7 @@ class CreateService {
         typeof event.body === "string" ? JSON.parse(event.body) : event.body;
       const { title } = body;
 
-      const oldArticle = await this.repository.findByTitle(title);
-
-      if (oldArticle) {
-        await this.repository.saveInHistory(oldArticle);
-      }
-
-      const article = await this.repository.create(title);
+      const article = await this.repository.create({ title });
 
       return this.http.send({
         status: StatusCode.CREATED,
