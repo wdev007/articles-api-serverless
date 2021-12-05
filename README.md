@@ -8,6 +8,8 @@
 
 > REST API of articles in serverless
 
+![Listagem](docs/images/print_crud.png)
+
 ### Built With
 
 This section list any major frameworks/libraries used to bootstrap project.
@@ -54,7 +56,15 @@ serverless offline start
 serverless deploy
 ```
 
-## Run tests
+## insomnia test
+
+1 - download the collection in the docs folder 
+
+2 - import it into insomnia
+
+3 - manipulate your articles
+
+## Run Unit tests
 
 ```sh
 npm run test
