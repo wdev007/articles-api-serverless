@@ -27,7 +27,7 @@ List things you need to use the software and how to install them.
 
 #### Roadmap
 
-- [x] AWS CLI
+- [x] AWS CLI (and run aws configure with your credentials)
 - [x] serverless
 - [x] Java Runtime Engine (JRE) version 6.x or newer (the local dynamodb needs it) 
 
