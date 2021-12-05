@@ -24,7 +24,7 @@ class GetAllHistoryService {
       if (error instanceof AppError) {
         return this.http.send({
           status: error.getStatus(),
-          body: error.message,
+          body: error.getBody(),
         });
       }
 

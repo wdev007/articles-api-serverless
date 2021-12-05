@@ -38,7 +38,7 @@ class SignInService {
       if (error instanceof AppError) {
         return this.httpResponse.send({
           status: error.getStatus(),
-          body: error.message,
+          body: error.getBody(),
         });
       }
 

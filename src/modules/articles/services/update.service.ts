@@ -32,7 +32,7 @@ class UpdateService {
       await this.repository.update(id, { title });
 
       return this.http.send({
-        status: StatusCode.NO_CONTEN,
+        status: StatusCode.NO_CONTENT,
         body: "",
       });
     } catch (error) {

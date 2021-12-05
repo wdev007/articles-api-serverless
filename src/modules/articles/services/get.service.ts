@@ -17,6 +17,10 @@ class GetService {
 
       const article = await this.repository.find(id);
 
+      if (!article) {
+        throw new AppError(StatusCode.BAD_REQUEST, 'article does not exists');
+      }
+
       return this.http.send({
         status: StatusCode.OK,
         body: article,
@@ -27,7 +31,7 @@ class GetService {
       if (error instanceof AppError) {
         return this.http.send({
           status: error.getStatus(),
-          body: error.message,
+          body: error.getBody(),
         });
       }
 

@@ -23,8 +23,6 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/articles-*"
-  # environment:
-  #   TABLE_ARTICLES: articles-${opt:stage, self:provider.stage}
 
 functions:
   jwtAuth:
@@ -56,6 +54,8 @@ functions:
         path: articles
         method: get
         cors: true
+        # authorizer:
+        #   name: jwtAuth
   articlesGet:
     handler: handler.get
     memorySize: 128
@@ -64,6 +64,8 @@ functions:
         path: articles/{id}
         method: get
         cors: true  
+        # authorizer:
+        #   name: jwtAuth
   articlesUpdate:
     handler: handler.update
     memorySize: 128
@@ -72,6 +74,8 @@ functions:
         path: articles/{id}
         method: patch
         cors: true
+        # authorizer:
+        #   name: jwtAuth
   articlesDelete:
     handler: handler.exclude
     memorySize: 128
@@ -80,6 +84,8 @@ functions:
         path: articles/{id}
         method: delete
         cors: true
+        # authorizer:
+        #   name: jwtAuth
   articlesGetAllHistory:
     handler: handler.getAllHistory
     memorySize: 128
@@ -88,7 +94,8 @@ functions:
         path: articles/history/{id}
         method: get
         cors: true
-
+        # authorizer:
+        #   name: jwtAuth
 resources:
   Resources:
     articlesTable:

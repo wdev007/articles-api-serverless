@@ -27,7 +27,7 @@ class DynamoDBRepository implements IRepository {
   }
 
   create = async (article: IArticle): Promise<IArticle> => {
-    const currentDate = new Date().toLocaleString('pt-BR');
+    const currentDate = new Date().toLocaleString("pt-BR");
     const params: PutItem = {
       TableName: tableName,
       Item: {
@@ -83,8 +83,14 @@ class DynamoDBRepository implements IRepository {
   };
 
   delete = async (id: string) => {
-    console.log(id);
-    // console.log("params: ", params);
+    const params = {
+      TableName: tableName,
+      Key: {
+        id: id,
+      },
+    };
+
+    await this.client.delete(params).promise();
   };
 
   update = async (id: string, payload: IArticle) => {
@@ -93,13 +99,13 @@ class DynamoDBRepository implements IRepository {
       Key: {
         id,
       },
-      UpdateExpression: 'set updated_at = :updated_at, title = :title',
+      UpdateExpression: "set updated_at = :updated_at, title = :title",
       ExpressionAttributeValues: {
-        ':title': payload.title,
-        ':updated_at': new Date().toLocaleString('pt-BR')
+        ":title": payload.title,
+        ":updated_at": new Date().toLocaleString("pt-BR"),
       },
-      ReturnValues: 'UPDATED_NEW'
-    }
+      ReturnValues: "UPDATED_NEW",
+    };
 
     await this.client.update(params).promise();
   };

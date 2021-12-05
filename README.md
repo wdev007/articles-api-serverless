@@ -8,6 +8,29 @@
 
 > REST API of articles in serverless
 
+### Built With
+
+This section list any major frameworks/libraries used to bootstrap project.
+
+- [NodeJs](https://nodejs.org/en/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Jest](https://jestjs.io/docs/getting-started/)
+- [Serverless](https://www.serverless.com/)
+- [AWS](https://aws.amazon.com/pt/)
+- [AWS Dynamodb](https://aws.amazon.com/pt/dynamodb/)
+- [AWS Lambda](https://aws.amazon.com/pt/lambda/)
+- [AWS Api Gateway](https://aws.amazon.com/pt/api-gateway/)
+
+### Prerequisites
+
+List things you need to use the software and how to install them.
+
+#### Roadmap
+
+- [x] AWS CLI
+- [x] serverless
+- [x] Java Runtime Engine (JRE) version 6.x or newer (the local dynamodb needs it) 
+
 ## Install
 
 ```sh
@@ -21,8 +44,14 @@ npm install
 serverless dynamodb install
 ```
 
+2 - run offline
 ```sh
 serverless offline start
+```
+
+3 - deploy
+```sh
+serverless deploy
 ```
 
 ## Run tests

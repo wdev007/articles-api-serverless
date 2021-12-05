@@ -15,7 +15,7 @@ const createService = new CreateService(httpResponse, repository);
 const getService = new GetService(httpResponse, repository);
 const getAllService = new GetAllService(httpResponse, repository);
 const updateService = new UpdateService(httpResponse, repository);
-const deletesService = new DeleteService(httpResponse);
+const deletesService = new DeleteService(httpResponse, repository);
 
 const getAllHistoryService = new GetAllHistoryService(httpResponse, repository);
 

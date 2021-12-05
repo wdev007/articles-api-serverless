@@ -1,7 +1,9 @@
-class AppError extends Error {
+class AppError {
   private body: any;
   constructor(private status: number, public message: any) {
-    super();
+    this.body = {
+      message
+    }
   }
 
   getStatus() {
